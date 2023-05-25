@@ -1,0 +1,11 @@
+<launch>
+  <arg name="vehicle_id" default="$(env VEHICLE_ID default)" />
+
+  <group>
+    <push-ros-namespace namespace="/perception/object_recognition/detection" />
+    <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
+      <arg name="input/pointcloud" value="/sensing/lidar/pointcloud"/>
+      <arg name="output/objects" value="objects"/>
+    </include>
+  </group>
+</launch>
