@@ -5,8 +5,8 @@
   </include>
 
   <group>
-    <push-ros-namespace namespace="/sensing/lidar/xt32" />
-    <include file="$(find-pkg-share edge_auto_launch)/launch/hesai_pandar_xt32.launch.xml">
+    <push-ros-namespace namespace="/sensing/lidar/at128" />
+    <include file="$(find-pkg-share edge_auto_launch)/launch/hesai_at128.launch.xml">
       <arg name="frame_id" value="lidar"/>
     </include>
   </group>
@@ -16,20 +16,20 @@
     <group>
       <push-ros-namespace namespace="obstacle_segmentation" />
       <include file="$(find-pkg-share edge_auto_launch)/launch/scan_ground_filter.launch.xml">
-        <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+        <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/>
         <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
       </include>
     </group>
     <group>
       <push-ros-namespace namespace="object_recognition/detection" />
-      <!-- <group>
+      <group>
         <push-ros-namespace namespace="centerpoint" />
         <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
-          <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+          <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/>
           <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
         </include>
-      </group> -->
-      <group>
+      </group>
+      <!-- <group>
         <push-ros-namespace namespace="euclidean_cluster" />
         <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_grid_based_euclidean_cluster.launch.xml">
           <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
@@ -43,7 +43,7 @@
           <arg name="input" value="objects_with_feature"/>
           <arg name="output" value="/perception/object_recognition/detection/objects"/>
         </include>
-      </group>
+      </group> -->
     </group>
   </group>
 

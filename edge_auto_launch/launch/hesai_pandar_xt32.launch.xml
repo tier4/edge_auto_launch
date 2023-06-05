@@ -2,9 +2,9 @@
   <arg name="live_sensor" default="False"/>
   <arg name="sensor_model" default="PandarXT32"/>
   <arg name="return_mode" default="Dual"/>
-  <arg name="frame_id"  default="hesai"/>
+  <arg name="frame_id" default="lidar"/>
   <arg name="scan_phase" default="0.0"/>
-  <arg name="namespace" default="/sensing/lidar/xt32"/>
+  <arg name="namespace" default=""/>
   <arg name="calibration_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var sensor_model).csv"/>
   <arg name="correction_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var sensor_model).dat"/>
   <arg name="sensor_ip" default="192.168.1.201"/>
@@ -28,7 +28,8 @@
         <param name="scan_phase" value="$(var scan_phase)"/>
         <param name="calibration_file" value="$(var calibration_file)"/>
         <param name="correction_file" value="$(var correction_file)"/>
- 	      <extra_arg name="use_intra_process_comms" value="true"/>
+        <remap from="pandar_points" to="pointcloud_raw"/>
+        <extra_arg name="use_intra_process_comms" value="true"/>
       </composable_node>
     </node_container>
 
@@ -49,7 +50,7 @@
         <param name="cloud_max_angle" value="$(var cloud_max_angle)"/>
         <param name="dual_return_distance_threshold" value="$(var dual_return_distance_threshold)"/>
         <param name="setup_sensor" value="$(var setup_sensor)"/>
- 	      <extra_arg name="use_intra_process_comms" value="true"/>
+        <extra_arg name="use_intra_process_comms" value="true"/>
       </composable_node>
       <composable_node pkg="nebula_ros" plugin="HesaiHwMonitorRosWrapper" name="hesai_hw_monitor_ros_wrapper_node" namespace="$(var namespace)">
         <param name="sensor_model" value="$(var sensor_model)"/>
@@ -67,7 +68,7 @@
         <param name="cloud_max_angle" value="$(var cloud_max_angle)"/>
         <param name="diag_span" value="$(var diag_span)"/>
         <param name="dual_return_distance_threshold" value="$(var dual_return_distance_threshold)"/>
- 	      <extra_arg name="use_intra_process_comms" value="true"/>
+        <extra_arg name="use_intra_process_comms" value="true"/>
       </composable_node>
     </load_composable_node>
   </group>
