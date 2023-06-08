@@ -1,12 +1,14 @@
 <launch>
-  <arg name="live_sensor" default="False"/>
+  <arg name="vehicle_id" default="default"/>
+  <arg name="live_sensor" default="True"/>
   <arg name="sensor_model" default="PandarAT128"/>
   <arg name="return_mode" default="Strongest"/>
   <arg name="frame_id" default="lidar"/>
   <arg name="scan_phase" default="0.0"/>
   <arg name="namespace" default=""/>
   <arg name="calibration_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var sensor_model).csv"/>
-  <arg name="correction_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var sensor_model).dat"/>
+  <!-- <arg name="correction_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var sensor_model).dat"/> -->
+  <arg name="correction_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/lidar/LDR2304001.dat"/>
   <arg name="sensor_ip" default="192.168.1.201"/>
   <arg name="host_ip" default="192.168.1.100"/>
   <arg name="data_port" default="2368"/>
@@ -20,7 +22,7 @@
   <arg name="setup_sensor" default="True"/>
 
   <group>
-    <node_container pkg="rclcpp_components" exec="component_container" name="nebula_at128_node" namespace="">
+    <node_container pkg="rclcpp_components" exec="component_container" name="nebula_at128_node" namespace="/">
       <composable_node pkg="nebula_ros" plugin="HesaiDriverRosWrapper" name="hesai_driver_roswrapper_node" namespace="$(var namespace)">
         <param name="sensor_model" value="$(var sensor_model)"/>
         <param name="return_mode" value="$(var return_mode)"/>

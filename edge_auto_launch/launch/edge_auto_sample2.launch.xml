@@ -1,15 +1,36 @@
 <launch>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)" />
+  <arg name="live_sensor" default="True"/>
+  <arg name="lidar_correction_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/lidar/LDR2304001.dat"/>
+  <let name="frame_id" value="lidar" />
   <include file="$(find-pkg-share vehicle_info_util)/launch/vehicle_info.launch.py">
     <arg name="vehicle_info_param_file" value="$(find-pkg-share edge_auto_launch)/config/vehicle_info.param.yaml"/>
   </include>
 
   <group>
-    <push-ros-namespace namespace="/sensing/lidar/at128" />
+    <push-ros-namespace namespace="/sensing/lidar/at128"/>
     <include file="$(find-pkg-share edge_auto_launch)/launch/hesai_at128.launch.xml">
-      <arg name="frame_id" value="lidar"/>
+      <arg name="frame_id" value="$(var frame_id)"/>
+      <arg name="vehicle_id" value="$(var vehicle_id)"/>
+      <arg name="live_sensor" value="$(var live_sensor)"/>
+      <arg name="correction_file" value="$(var lidar_correction_file)"/>
     </include>
   </group>
+
+  <!-- <include file="$(find-pkg-share edge_auto_launch)/launch/random_downsample_filter.launch.xml"> -->
+  <!--   <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/> -->
+  <!--   <arg name="output/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/> -->
+  <!--   <arg name="sample_num" value="1500"/> -->
+  <!--   <arg name="sample_num" value="3000"/> -->
+  <!--   <arg name="frame_id" value="$(var frame_id)"/> -->
+  <!-- </include> -->
+  <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_downsample_filter.launch.xml">
+    <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/>
+    <arg name="output/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/>
+    <arg name="voxel_size_x" value="0.3" />
+    <arg name="voxel_size_y" value="0.3" />
+    <arg name="voxel_size_z" value="0.1" />
+  </include>
 
   <group>
     <push-ros-namespace namespace="/perception" />
@@ -25,8 +46,10 @@
       <group>
         <push-ros-namespace namespace="centerpoint" />
         <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
-          <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/>
+          <arg name="input/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/>
           <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
+          <arg name="score_threshold" value="0.05"/>
+          <arg name="densification_num_past_frames" value="0"/>
         </include>
       </group>
       <!-- <group>
