@@ -17,16 +17,16 @@
     </include>
   </group>
 
-  <!-- <include file="$(find-pkg-share edge_auto_launch)/launch/random_downsample_filter.launch.xml"> -->
-  <!--   <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/> -->
-  <!--   <arg name="output/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/> -->
-  <!--   <arg name="sample_num" value="1500"/> -->
-  <!--   <arg name="sample_num" value="3000"/> -->
-  <!--   <arg name="frame_id" value="$(var frame_id)"/> -->
-  <!-- </include> -->
-  <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_downsample_filter.launch.xml">
+  <include file="$(find-pkg-share edge_auto_launch)/launch/crop_box_filter.launch.xml">
     <arg name="input/pointcloud" value="/sensing/lidar/at128/pointcloud_raw"/>
-    <arg name="output/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/>
+    <arg name="output/pointcloud" value="/sensing/lidar/at128/cropped/pointcloud_raw"/>
+    <!-- crop floor and ceil -->
+    <!-- <arg name="min_z" value="-1.1" /> -->
+    <arg name="max_z" value="1.2" />
+  </include>
+  <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_downsample_filter.launch.xml">
+    <arg name="input/pointcloud" value="/sensing/lidar/at128/cropped/pointcloud_raw"/>
+    <arg name="output/pointcloud" value="/sensing/lidar/at128/downsampled/pointcloud_raw"/>
     <arg name="voxel_size_x" value="0.3" />
     <arg name="voxel_size_y" value="0.3" />
     <arg name="voxel_size_z" value="0.1" />
@@ -46,9 +46,10 @@
       <group>
         <push-ros-namespace namespace="centerpoint" />
         <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
-          <arg name="input/pointcloud" value="/sensing/lidar/at128/downsample_filter/pointcloud_raw"/>
+          <arg name="input/pointcloud" value="/sensing/lidar/at128/downsampled/pointcloud_raw"/>
           <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
-          <arg name="score_threshold" value="0.05"/>
+          <arg name="model_name" value="centerpoint"/>
+          <arg name="score_threshold" value="0.075"/>
           <arg name="densification_num_past_frames" value="0"/>
         </include>
       </group>

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="parent_frame" default="lidar"/>
+  <let name="parent_frame" value="lidar"/>
+
   <arg name="camera_name"/>
   <arg name="rviz" default="true"/>
 
   <!-- we do not use the standard image_raw name to avoid naming conflicts -->
-  <let name="image_decompressed_topic" value="/sensing/camera/$(var camera_name)/decompressed/image_raw"/>
+  <let name="image_decompressed_topic" value="/sensing/camera/$(var camera_name)/image_raw"/>
   <let name="image_compressed_topic" value="/sensing/camera/$(var camera_name)/image_raw/compressed"/>
   <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/camera_info"/>
   <let name="pointcloud_topic" value="/aw_points"/>
   <let name="camera_frame" value="$(var camera_name)/camera_link"/>
   
   <let name="rviz_profile" value=""/>
-  <let name="rviz_profile" value="$(find-pkg-share edge_auto_launch)/config/rviz/tag_calib_camera0_aw_points.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera0' &quot;)"/>
-  <let name="rviz_profile" value="$(find-pkg-share edge_auto_launch)/config/rviz/tag_calib_camera1_aw_points.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
+  <let name="rviz_profile" value="$(find-pkg-share extrinsic_calibration_manager)/rviz/tag_calib_camera0_aw_points.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera0' &quot;)"/>
+  <let name="rviz_profile" value="$(find-pkg-share extrinsic_calibration_manager)/rviz/tag_calib_camera1_aw_points.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
 
-  <arg name="lidar_model" default="at128"/>
+  <let name="lidar_model" value="at128"/>
 
   <!-- image decompressor -->
   <node pkg="image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
@@ -75,6 +76,9 @@
     output="screen"
     args="--x 0.0 --y 0.0 --z 0.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id lidar --child-frame-id camera1/camera_link"
   />
+
+
+
 
   <!-- interactive calibrator -->
   <group>
