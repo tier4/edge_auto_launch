@@ -47,7 +47,7 @@
         <push-ros-namespace namespace="centerpoint" />
         <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
           <arg name="input/pointcloud" value="/sensing/lidar/at128/downsampled/pointcloud_raw"/>
-          <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
+          <arg name="output/objects" value="objects"/>
           <arg name="model_name" value="centerpoint"/>
           <arg name="score_threshold" value="0.075"/>
           <arg name="densification_num_past_frames" value="0"/>
@@ -68,6 +68,19 @@
           <arg name="output" value="/perception/object_recognition/detection/objects"/>
         </include>
       </group> -->
+    </group>
+    <group>
+      <push-ros-namespace namespace="roi_detected_objects_fusion" />
+      <include file="$(find-pkg-share edge_auto_launch)/launch/roi_detected_objects_fusion.launch.xml">
+        <arg name="input/objects" value="/perception/object_recognition/detection/centerpoint/objects"/>
+        <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
+        <arg name="input/rois_number" value="2"/>
+        <arg name="model_name" value="centerpoint"/>
+        <arg name="input/rois0" value="/perception/object_recognition/detection/rois0"/>
+        <arg name="input/camera_info0" value="/sensing/camera/camera0/camera_info"/>
+        <arg name="input/rois1" value="/perception/object_recognition/detection/rois1"/>
+        <arg name="input/camera_info1" value="/sensing/camera/camera0/camera_info"/>
+      </include>
     </group>
   </group>
 
