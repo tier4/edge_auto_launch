@@ -11,17 +11,17 @@
   </include>
 
   <!-- calibration -->
-  <include file="$(find-pkg-share edge_auto_launch)/component/launch/lidar_camera_tf_publisher.launch.py">
+  <include file="$(find-pkg-share edge_auto_launch)/launch/component/lidar_camera_tf_publisher.launch.py">
     <arg name="tf_file_path" value="$(var lidar_camera0_tf_file)"/>
   </include>
-  <include file="$(find-pkg-share edge_auto_launch)/component/launch/lidar_camera_tf_publisher.launch.py">
+  <include file="$(find-pkg-share edge_auto_launch)/launch/component/lidar_camera_tf_publisher.launch.py">
     <arg name="tf_file_path" value="$(var lidar_camera1_tf_file)"/>
   </include>
 
   <!-- driver -->
   <group>
     <push-ros-namespace namespace="/sensing/lidar/xt32"/>
-    <include file="$(find-pkg-share edge_auto_launch)/component/launch/hesai_pandar_xt32.launch.xml">
+    <include file="$(find-pkg-share edge_auto_launch)/launch/component/hesai_pandar_xt32.launch.xml">
       <arg name="frame_id" value="lidar"/>
       <arg name="live_sensor" value="$(var live_sensor)"/>
     </include>
@@ -32,7 +32,7 @@
     <push-ros-namespace namespace="/perception"/>
     <group>
       <push-ros-namespace namespace="obstacle_segmentation"/>
-      <include file="$(find-pkg-share edge_auto_launch)/launch/scan_ground_filter.launch.xml">
+      <include file="$(find-pkg-share edge_auto_launch)/launch/component/scan_ground_filter.launch.xml">
         <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
         <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
       </include>
@@ -41,7 +41,7 @@
       <push-ros-namespace namespace="object_recognition/detection"/>
       <group>
         <push-ros-namespace namespace="euclidean_cluster"/>
-        <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_grid_based_euclidean_cluster.launch.xml">
+        <include file="$(find-pkg-share edge_auto_launch)/launch/component/voxel_grid_based_euclidean_cluster.launch.xml">
           <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
           <arg name="output/objects" value="clusters"/>
         </include>
@@ -58,7 +58,6 @@
   </group>
 
   <!-- visualization -->
-  <group>
-    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen"/>
-  </group>
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share edge_auto_launch)/config/visualization/perception_xt32_sample.rviz"/>
+  <node pkg="rqt_gui" exec="rqt_gui" name="rqt_gui" output="screen" args="--perspective-file $(find-pkg-share edge_auto_launch)/config/visualization/perception_xt32_sample.perspective"/>
 </launch>
