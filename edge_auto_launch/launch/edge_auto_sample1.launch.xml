@@ -1,11 +1,53 @@
 <launch>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)" />
+  <include file="$(find-pkg-share vehicle_info_util)/launch/vehicle_info.launch.py">
+    <arg name="vehicle_info_param_file" value="$(find-pkg-share edge_auto_launch)/config/vehicle_info.param.yaml"/>
+  </include>
 
   <group>
-    <push-ros-namespace namespace="/perception/object_recognition/detection" />
-    <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
-      <arg name="input/pointcloud" value="/sensing/lidar/pointcloud"/>
-      <arg name="output/objects" value="objects"/>
+    <push-ros-namespace namespace="/sensing/lidar/xt32" />
+    <include file="$(find-pkg-share edge_auto_launch)/launch/hesai_pandar_xt32.launch.xml">
+      <arg name="frame_id" value="lidar"/>
     </include>
+  </group>
+
+  <group>
+    <push-ros-namespace namespace="/perception" />
+    <group>
+      <push-ros-namespace namespace="obstacle_segmentation" />
+      <include file="$(find-pkg-share edge_auto_launch)/launch/scan_ground_filter.launch.xml">
+        <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+        <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+      </include>
+    </group>
+    <group>
+      <push-ros-namespace namespace="object_recognition/detection" />
+      <!-- <group>
+        <push-ros-namespace namespace="centerpoint" />
+        <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
+          <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+          <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
+        </include>
+      </group> -->
+      <group>
+        <push-ros-namespace namespace="euclidean_cluster" />
+        <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_grid_based_euclidean_cluster.launch.xml">
+          <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+          <arg name="output/objects" value="clusters"/>
+        </include>
+        <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
+          <arg name="input/objects" value="clusters"/>
+          <arg name="output/objects" value="objects_with_feature"/>
+        </include>
+        <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
+          <arg name="input" value="objects_with_feature"/>
+          <arg name="output" value="/perception/object_recognition/detection/objects"/>
+        </include>
+      </group>
+    </group>
+  </group>
+
+  <group>
+    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" />
   </group>
 </launch>
