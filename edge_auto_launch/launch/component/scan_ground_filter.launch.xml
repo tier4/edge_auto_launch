@@ -1,6 +1,6 @@
 <launch>
-  <arg name="input/pointcloud" default="pointcloud"/>
-  <arg name="output/pointcloud" default="no_ground/pointcloud"/>
+  <arg name="input/pointcloud" default="input/pointcloud"/>
+  <arg name="output/pointcloud" default="output/pointcloud"/>
   <arg name="param_path" default="$(find-pkg-share edge_auto_launch)/config/scan_ground_filter.param.yaml"/>
 
   <group>

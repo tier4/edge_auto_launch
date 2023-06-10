@@ -1,6 +1,6 @@
 <launch>
-  <arg name="input/pointcloud" default="pointcloud_raw"/>
-  <arg name="output/pointcloud" default="cropped/pointcloud_raw"/>
+  <arg name="input/pointcloud" default="input/pointcloud"/>
+  <arg name="output/pointcloud" default="output/pointcloud"/>
   <arg name="frame_id" default="lidar"/>
 
   <arg name="min_x" default="-100.0"/>
@@ -9,8 +9,7 @@
   <arg name="max_x" default="100.0"/>
   <arg name="max_y" default="100.0"/>
   <arg name="max_z" default="100.0"/>
-  <arg name="negative" default="false"
-       description="If true, points outside of the box will be published"/>
+  <arg name="negative" default="false" description="If true, points outside of the box will be published"/>
   <arg name="container_name" default=""/>
 
   <let name="empty_container_is_specified" value="$(eval 'not &quot;$(var container_name)&quot;')" />
