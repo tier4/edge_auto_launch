@@ -10,7 +10,7 @@
   <let name="lidar_frame" value="lidar"/>
   <let name="compressed_image_topic" value="/sensing/camera/$(var camera_name)/image_raw/compressed"/>
   <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/camera_info"/>
-  <let name="pointcloud_topic" value="/sensing/lidar/at128/pointcloud_raw"/>
+  <let name="pointcloud_topic" value="/sensing/lidar/at128/aw_points"/>
   <let name="camera_frame" value="$(var camera_name)/camera_link"/>
 
   <let name="rviz_profile" value=""/>
