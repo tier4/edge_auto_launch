@@ -81,7 +81,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 93
+      Max Intensity: 255
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: Pointcloud
@@ -96,60 +96,10 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /sensing/lidar/at128/pointcloud_raw
+        Value: /sensing/lidar/xt32/pointcloud_raw
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
-    - BUS:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      CAR:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      CYCLIST:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      Class: autoware_auto_perception_rviz_plugin/DetectedObjects
-      Display Acceleration: true
-      Display Label: true
-      Display PoseWithCovariance: true
-      Display Predicted Path Confidence: true
-      Display Predicted Paths: true
-      Display Twist: true
-      Display UUID: true
-      Display Velocity: true
-      Enabled: true
-      Line Width: 0.019999999552965164
-      MOTORCYCLE:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      Name: Centerpoint
-      Namespaces:
-        label: true
-        shape: true
-        twist: true
-        velocity: true
-      PEDESTRIAN:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      Polygon Type: 3d
-      TRAILER:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      TRUCK:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /perception/object_recognition/detection/centerpoint/objects
-      UNKNOWN:
-        Alpha: 0.30000001192092896
-        Color: 255; 255; 255
-      Value: true
-      Visualization Type: Normal
     - BUS:
         Alpha: 1
         Color: 30; 144; 255
@@ -173,7 +123,7 @@ Visualization Manager:
       MOTORCYCLE:
         Alpha: 1
         Color: 30; 144; 255
-      Name: Fusion
+      Name: Detected Objects
       Namespaces:
         label: true
         shape: true
@@ -246,25 +196,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 6.8703718185424805
+      Distance: 11.199999809265137
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.8181100487709045
-        Y: -0.33301103115081787
-        Z: 1.4219279289245605
-      Focal Shape Fixed Size: true
+        X: -0.20143486559391022
+        Y: -0.5514689087867737
+        Z: 0.7952755689620972
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.41039809584617615
+      Pitch: 0.560398519039154
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 3.400399923324585
+      Yaw: 1.7753984928131104
     Saved: ~
 Window Geometry:
   Displays:

@@ -20,7 +20,7 @@
   <arg name="setup_sensor" default="True"/>
 
   <group>
-    <node_container pkg="rclcpp_components" exec="component_container" name="nebula_xt32_node" namespace="">
+    <node_container pkg="rclcpp_components" exec="component_container" name="nebula_xt32_node" namespace="/">
       <composable_node pkg="nebula_ros" plugin="HesaiDriverRosWrapper" name="hesai_driver_roswrapper_node" namespace="$(var namespace)">
         <param name="sensor_model" value="$(var sensor_model)"/>
         <param name="return_mode" value="$(var return_mode)"/>
