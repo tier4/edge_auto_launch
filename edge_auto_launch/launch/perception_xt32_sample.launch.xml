@@ -1,36 +1,46 @@
 <launch>
-  <arg name="vehicle_id" default="$(env VEHICLE_ID default)" />
+  <!-- arguments -->
+  <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
+  <arg name="lidar_camera0_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/xt32_to_camera0.json"/>
+  <arg name="lidar_camera1_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/xt32_to_camera1.json"/>
+  <arg name="live_sensor" default="True"/>
+
+  <!-- vehicle_info -->
   <include file="$(find-pkg-share vehicle_info_util)/launch/vehicle_info.launch.py">
-    <arg name="vehicle_info_param_file" value="$(find-pkg-share edge_auto_launch)/config/vehicle_info.param.yaml"/>
+    <arg name="vehicle_info_param_file" value="$(find-pkg-share individual_params)/config/$(var vehicle_id)/vehicle_info.param.yaml"/>
   </include>
 
+  <!-- calibration -->
+  <include file="$(find-pkg-share edge_auto_launch)/component/launch/lidar_camera_tf_publisher.launch.py">
+    <arg name="tf_file_path" value="$(var lidar_camera0_tf_file)"/>
+  </include>
+  <include file="$(find-pkg-share edge_auto_launch)/component/launch/lidar_camera_tf_publisher.launch.py">
+    <arg name="tf_file_path" value="$(var lidar_camera1_tf_file)"/>
+  </include>
+
+  <!-- driver -->
   <group>
-    <push-ros-namespace namespace="/sensing/lidar/xt32" />
-    <include file="$(find-pkg-share edge_auto_launch)/launch/hesai_pandar_xt32.launch.xml">
+    <push-ros-namespace namespace="/sensing/lidar/xt32"/>
+    <include file="$(find-pkg-share edge_auto_launch)/component/launch/hesai_pandar_xt32.launch.xml">
       <arg name="frame_id" value="lidar"/>
+      <arg name="live_sensor" value="$(var live_sensor)"/>
     </include>
   </group>
 
+  <!-- perception -->
   <group>
-    <push-ros-namespace namespace="/perception" />
+    <push-ros-namespace namespace="/perception"/>
     <group>
-      <push-ros-namespace namespace="obstacle_segmentation" />
+      <push-ros-namespace namespace="obstacle_segmentation"/>
       <include file="$(find-pkg-share edge_auto_launch)/launch/scan_ground_filter.launch.xml">
         <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
         <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
       </include>
     </group>
     <group>
-      <push-ros-namespace namespace="object_recognition/detection" />
-      <!-- <group>
-        <push-ros-namespace namespace="centerpoint" />
-        <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_centerpoint.launch.xml">
-          <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
-          <arg name="output/objects" value="/perception/object_recognition/detection/objects"/>
-        </include>
-      </group> -->
+      <push-ros-namespace namespace="object_recognition/detection"/>
       <group>
-        <push-ros-namespace namespace="euclidean_cluster" />
+        <push-ros-namespace namespace="euclidean_cluster"/>
         <include file="$(find-pkg-share edge_auto_launch)/launch/voxel_grid_based_euclidean_cluster.launch.xml">
           <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
           <arg name="output/objects" value="clusters"/>
@@ -47,7 +57,8 @@
     </group>
   </group>
 
+  <!-- visualization -->
   <group>
-    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" />
+    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen"/>
   </group>
 </launch>
