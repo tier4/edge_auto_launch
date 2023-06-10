@@ -24,7 +24,6 @@
     <push-ros-namespace namespace="/sensing/lidar/at128"/>
     <include file="$(find-pkg-share edge_auto_launch)/component/launch/hesai_at128.launch.xml">
       <arg name="frame_id" value="lidar"/>
-      <arg name="vehicle_id" value="$(var vehicle_id)"/>
       <arg name="live_sensor" value="$(var live_sensor)"/>
       <arg name="correction_file" value="$(var lidar_correction_file)"/>
     </include>
