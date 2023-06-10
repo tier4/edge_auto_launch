@@ -2,6 +2,9 @@
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)" />
   <arg name="live_sensor" default="True"/>
   <arg name="lidar_correction_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/lidar/LDR2304001.dat"/>
+  <arg name="lidar_camera0_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/camera0/tf.json"/>
+  <arg name="lidar_camera1_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/camera1/tf.json"/>
+
   <let name="frame_id" value="lidar" />
   <include file="$(find-pkg-share vehicle_info_util)/launch/vehicle_info.launch.py">
     <arg name="vehicle_info_param_file" value="$(find-pkg-share edge_auto_launch)/config/vehicle_info.param.yaml"/>
@@ -83,6 +86,16 @@
       </include>
     </group>
   </group>
+
+  <group>
+    <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_camera_tf_publisher.launch.py">
+      <arg name="tf_file_path" value="$(var lidar_camera0_tf_file)"/>
+    </include>
+    <include file="$(find-pkg-share edge_auto_launch)/launch/lidar_camera_tf_publisher.launch.py">
+      <arg name="tf_file_path" value="$(var lidar_camera1_tf_file)"/>
+    </include>
+  </group>
+
 
   <group>
     <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" />
