@@ -5,7 +5,7 @@
   <arg name="live_sensor" default="True"/>
 
   <!-- variables -->
-  <let name="lidar_model" value="pandar_40p"/>
+  <let name="lidar_model" value="pandar_xt32"/>
   <let name="lidar_frame" value="lidar"/>
   <let name="compressed_image_topic" value="/sensing/camera/$(var camera_name)/image_raw/compressed"/>
   <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/camera_info"/>
