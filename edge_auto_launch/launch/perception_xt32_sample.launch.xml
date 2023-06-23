@@ -31,9 +31,20 @@
   <group>
     <push-ros-namespace namespace="/perception"/>
     <group>
+      <include file="$(find-pkg-share edge_auto_launch)/launch/component/crop_box_filter.launch.xml">
+        <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+        <arg name="output/pointcloud" value="cropped/pointcloud"/>
+        <arg name="min_x" value="-0.15"/>
+        <arg name="min_y" value="-0.15"/>
+        <arg name="min_z" value="-0.15"/>
+        <arg name="max_x" value="0.15"/>
+        <arg name="max_y" value="0.15"/>
+        <arg name="max_z" value="0.15"/>
+        <arg name="negative" value="true"/>
+      </include>
       <push-ros-namespace namespace="obstacle_segmentation"/>
       <include file="$(find-pkg-share edge_auto_launch)/launch/component/scan_ground_filter.launch.xml">
-        <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
+        <arg name="input/pointcloud" value="/perception/cropped/pointcloud"/>
         <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
       </include>
     </group>
