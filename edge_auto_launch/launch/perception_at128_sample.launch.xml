@@ -65,6 +65,8 @@
         <arg name="input/camera_info0" value="/sensing/camera/camera0/camera_info"/>
         <arg name="input/rois1" value="/perception/object_recognition/detection/rois1"/>
         <arg name="input/camera_info1" value="/sensing/camera/camera0/camera_info"/>
+        <arg name="input/image0" value="/sensing/camera/camera0/image_raw"/>
+        <arg name="input/image1" value="/sensing/camera/camera1/image_raw"/>
       </include>
     </group>
   </group>
