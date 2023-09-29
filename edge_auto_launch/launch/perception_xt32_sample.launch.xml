@@ -34,13 +34,8 @@
       <include file="$(find-pkg-share edge_auto_launch)/launch/component/crop_box_filter.launch.xml">
         <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
         <arg name="output/pointcloud" value="cropped/pointcloud"/>
-        <arg name="min_x" value="-0.15"/>
-        <arg name="min_y" value="-0.15"/>
-        <arg name="min_z" value="-0.15"/>
-        <arg name="max_x" value="0.15"/>
-        <arg name="max_y" value="0.15"/>
-        <arg name="max_z" value="0.15"/>
-        <arg name="negative" value="true"/>
+        <arg name="frame_id" value="base_link"/>
+        <arg name="max_z" value="1.2"/>
       </include>
       <push-ros-namespace namespace="obstacle_segmentation"/>
       <include file="$(find-pkg-share edge_auto_launch)/launch/component/scan_ground_filter.launch.xml">
@@ -59,14 +54,40 @@
         <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
           <arg name="input/objects" value="clusters"/>
           <arg name="output/objects" value="objects_with_feature"/>
+          <arg name="node_name" value="shape_estimation"/>
         </include>
         <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
           <arg name="input" value="objects_with_feature"/>
-          <arg name="output" value="/perception/object_recognition/detection/objects"/>
+          <arg name="output" value="/perception/object_recognition/detection/euclidean_cluster/objects"/>
+          <arg name="node_name" value="detected_object_feature_remover"/>
         </include>
       </group>
     </group>
+    <group>
+      <push-ros-namespace namespace="image_projection_based_fusion"/>
+      <include file="$(find-pkg-share edge_auto_launch)/launch/component/roi_cluster_fusion.launch.xml">
+        <arg name="input/clusters" value="/perception/object_recognition/detection/euclidean_cluster/clusters"/>
+        <arg name="output/clusters" value="clusters"/>
+        <arg name="input/rois_number" value="2"/>
+        <arg name="input/rois0" value="/perception/object_recognition/detection/rois0"/>
+        <arg name="input/camera_info0" value="/sensing/camera/camera0/camera_info"/>
+        <arg name="input/rois1" value="/perception/object_recognition/detection/rois1"/>
+        <arg name="input/camera_info1" value="/sensing/camera/camera1/camera_info"/>
+      </include>
+      <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
+        <arg name="input/objects" value="clusters"/>
+        <arg name="output/objects" value="objects_with_feature"/>
+        <arg name="node_name" value="shape_estimation"/>
+      </include>
+      <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
+        <arg name="input" value="objects_with_feature"/>
+        <arg name="output" value="/perception/object_recognition/detection/objects"/>
+        <arg name="node_name" value="detected_object_feature_remover"/>
+      </include>
+    </group>
   </group>
+
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 1.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id base_link --child-frame-id lidar" />
 
   <!-- visualization -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share edge_auto_launch)/config/visualization/perception_xt32_sample.rviz"/>
