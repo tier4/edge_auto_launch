@@ -1,4 +1,4 @@
-# Copyright 2023 Tier IV, Inc.
+# Copyright 2023 TIER IV, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,5 +68,3 @@ def generate_launch_description():
             OpaqueFunction(function=launch_setup),
         ]
     )
-
-
