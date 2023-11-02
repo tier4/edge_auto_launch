@@ -73,8 +73,4 @@
       </include>
     </group>
   </group>
-
-  <!-- visualization -->
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share edge_auto_launch)/config/visualization/perception_at128_sample.rviz"/>
-  <node pkg="rqt_gui" exec="rqt_gui" name="rqt_gui" output="screen" args="--perspective-file $(find-pkg-share edge_auto_launch)/config/visualization/perception_at128_sample.perspective"/>
 </launch>
