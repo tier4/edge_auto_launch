@@ -4,11 +4,15 @@
   <arg name="lidar_camera0_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/xt32_to_camera0.json"/>
   <arg name="lidar_camera1_tf_file" default="$(find-pkg-share individual_params)/config/$(var vehicle_id)/xt32_to_camera1.json"/>
   <arg name="live_sensor" default="True"/>
+  <arg name="sensor_height" default="1.0"/>
 
   <!-- vehicle_info -->
   <include file="$(find-pkg-share vehicle_info_util)/launch/vehicle_info.launch.py">
     <arg name="vehicle_info_param_file" value="$(find-pkg-share individual_params)/config/$(var vehicle_id)/vehicle_info.param.yaml"/>
   </include>
+
+  <!-- base_link generation -->
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z $(var sensor_height) --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id base_link --child-frame-id lidar" />
 
   <!-- calibration -->
   <include file="$(find-pkg-share edge_auto_launch)/launch/component/lidar_camera_tf_publisher.launch.py">
@@ -35,7 +39,7 @@
         <arg name="input/pointcloud" value="/sensing/lidar/xt32/pointcloud_raw"/>
         <arg name="output/pointcloud" value="cropped/pointcloud"/>
         <arg name="frame_id" value="base_link"/>
-        <arg name="max_z" value="1.2"/>
+        <arg name="max_z" value="2.0"/>
       </include>
       <push-ros-namespace namespace="obstacle_segmentation"/>
       <include file="$(find-pkg-share edge_auto_launch)/launch/component/scan_ground_filter.launch.xml">
@@ -86,8 +90,6 @@
       </include>
     </group>
   </group>
-
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 1.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id base_link --child-frame-id lidar" />
 
   <!-- visualization -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share edge_auto_launch)/config/visualization/perception_xt32_sample.rviz"/>
