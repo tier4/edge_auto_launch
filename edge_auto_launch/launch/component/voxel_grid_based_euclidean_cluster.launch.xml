@@ -5,7 +5,7 @@
 
   <group>
     <node_container pkg="rclcpp_components" exec="component_container" name="container" namespace="">
-      <composable_node pkg="euclidean_cluster" plugin="euclidean_cluster::VoxelGridBasedEuclideanClusterNode" name="euclidean_cluster" namespace="">
+      <composable_node pkg="autoware_euclidean_cluster" plugin="autoware::euclidean_cluster::VoxelGridBasedEuclideanClusterNode" name="euclidean_cluster" namespace="">
         <remap from="input" to="$(var input/pointcloud)"/>
         <remap from="output" to="$(var output/objects)"/>
         <param from="$(var param_path)"/>
