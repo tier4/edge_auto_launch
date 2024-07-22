@@ -11,7 +11,7 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <exec_depend>autoware_auto_perception_rviz_plugin</exec_depend>
-  <exec_depend>detected_object_feature_remover</exec_depend>
+  <exec_depend>autoware_detected_object_feature_remover</exec_depend>
   <exec_depend>autoware_euclidean_cluster</exec_depend>
   <exec_depend>extrinsic_calibration_manager</exec_depend>
   <exec_depend>extrinsic_manual_calibrator</exec_depend>
