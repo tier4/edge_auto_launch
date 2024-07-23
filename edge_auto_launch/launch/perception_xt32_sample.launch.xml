@@ -60,7 +60,7 @@
           <arg name="output/objects" value="objects_with_feature"/>
           <arg name="node_name" value="shape_estimation"/>
         </include>
-        <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
+        <include file="$(find-pkg-share autoware_detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
           <arg name="input" value="objects_with_feature"/>
           <arg name="output" value="/perception/object_recognition/detection/euclidean_cluster/objects"/>
           <arg name="node_name" value="detected_object_feature_remover"/>
@@ -83,7 +83,7 @@
         <arg name="output/objects" value="objects_with_feature"/>
         <arg name="node_name" value="shape_estimation"/>
       </include>
-      <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
+      <include file="$(find-pkg-share autoware_detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
         <arg name="input" value="objects_with_feature"/>
         <arg name="output" value="/perception/object_recognition/detection/objects"/>
         <arg name="node_name" value="detected_object_feature_remover"/>
