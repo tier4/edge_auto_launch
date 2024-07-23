@@ -16,7 +16,7 @@
   <exec_depend>extrinsic_calibration_manager</exec_depend>
   <exec_depend>extrinsic_manual_calibrator</exec_depend>
   <exec_depend>extrinsic_tag_based_calibrator</exec_depend>
-  <exec_depend>ground_segmentation</exec_depend>
+  <exec_depend>autoware_ground_segmentation</exec_depend>
   <exec_depend>intrinsic_camera_calibrator</exec_depend>
   <exec_depend>lidar_centerpoint</exec_depend>
   <exec_depend>nebula_sensor_driver</exec_depend>
