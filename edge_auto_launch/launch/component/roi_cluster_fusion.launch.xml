@@ -20,7 +20,7 @@
     <set_remap if="$(eval &quot;'$(var input_rois_number)' >= '2' &quot;)" from="input/rois1" to="$(var input/rois1)"/>
     <set_remap if="$(eval &quot;'$(var input_rois_number)' >= '2' &quot;)" from="input/camera_info1" to="$(var input/camera_info1)"/>
 
-    <node pkg="image_projection_based_fusion" exec="roi_cluster_fusion_node" name="roi_cluster_fusion" output="screen">
+    <node pkg="autoware_image_projection_based_fusion" exec="roi_cluster_fusion_node" name="roi_cluster_fusion" output="screen">
       <param name="rois_number" value="$(var input/rois_number)"/>
       <param from="$(var sync_param_path)"/>
       <remap from="input" to="$(var input/clusters)"/>
