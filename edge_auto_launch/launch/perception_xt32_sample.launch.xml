@@ -55,7 +55,7 @@
           <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
           <arg name="output/objects" value="clusters"/>
         </include>
-        <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
+        <include file="$(find-pkg-share autoware_shape_estimation)/launch/shape_estimation.launch.xml">
           <arg name="input/objects" value="clusters"/>
           <arg name="output/objects" value="objects_with_feature"/>
           <arg name="node_name" value="shape_estimation"/>
@@ -78,7 +78,7 @@
         <arg name="input/rois1" value="/perception/object_recognition/detection/rois1"/>
         <arg name="input/camera_info1" value="/sensing/camera/camera1/camera_info"/>
       </include>
-      <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
+      <include file="$(find-pkg-share autoware_shape_estimation)/launch/shape_estimation.launch.xml">
         <arg name="input/objects" value="clusters"/>
         <arg name="output/objects" value="objects_with_feature"/>
         <arg name="node_name" value="shape_estimation"/>
