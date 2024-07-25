@@ -29,7 +29,7 @@
   <group>
     <push-ros-namespace namespace="$(var lidar_frame)/$(var camera_frame)"/>
     <!-- image_decompressor -->
-    <node pkg="image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
+    <node pkg="autoware_image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
       <remap from="decompressor/input/compressed_image" to="$(var compressed_image_topic)"/>
       <remap from="decompressor/output/raw_image" to="image_raw"/>
     </node>
