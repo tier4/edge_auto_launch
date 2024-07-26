@@ -22,7 +22,7 @@
   <exec_depend>autoware_lidar_centerpoint</exec_depend>
   <exec_depend>nebula_sensor_driver</exec_depend>
   <exec_depend>rviz2</exec_depend>
-  <exec_depend>shape_estimation</exec_depend>
+  <exec_depend>autoware_shape_estimation</exec_depend>
   <exec_depend>vehicle_info_util</exec_depend>
   <exec_depend>image_transport_decompressor</exec_depend>
   <exec_depend>individual_params</exec_depend>
