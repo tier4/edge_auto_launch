@@ -1,0 +1,31 @@
+<launch>
+  <arg name="parent_frame" default="base_link"/>
+  <arg name="child_frame" default="camera0/camera_optical_link"/>
+
+  <!-- extrinsic_calibration_client -->
+  <arg name="src_yaml" default="$(find-pkg-share edge_auto_launch)/config/sample_calibration.yaml"/>
+  <arg name="dst_yaml" default="$(env HOME)/calibration.yaml"/>
+
+  <node pkg="extrinsic_calibration_client" exec="extrinsic_calibration_client" name="extrinsic_calibration_client" output="screen">
+    <param name="src_path" value="$(var src_yaml)"/>
+    <param name="dst_path" value="$(var dst_yaml)"/>
+  </node>
+
+  <!-- extrinsic_calibration_manager -->
+  <node pkg="extrinsic_calibration_manager" exec="extrinsic_calibration_manager" name="extrinsic_calibration_manager" output="screen">
+    <param name="parent_frame" value="$(var parent_frame)"/>
+    <param name="child_frames" value="[$(var child_frame)]"/>
+  </node>
+
+  <!-- extrinsic_manual_calibrator -->
+  <group>
+    <push-ros-namespace namespace="$(var parent_frame)/$(var child_frame)" />
+    <node pkg="extrinsic_manual_calibrator" exec="extrinsic_manual_calibrator" name="extrinsic_manual_calibrator" output="screen"/>
+    <node pkg="tunable_static_tf_broadcaster" exec="tunable_static_tf_broadcaster_node" name="tf_broadcaster" output="screen">
+      <param name="header_frame" value="$(var parent_frame)"/>
+      <param name="child_frame" value="$(var child_frame)"/>
+    </node>
+  </group>
+
+  <node pkg="rqt_reconfigure" exec="rqt_reconfigure" name="rqt_reconfigure" output="screen"/>
+</launch>
