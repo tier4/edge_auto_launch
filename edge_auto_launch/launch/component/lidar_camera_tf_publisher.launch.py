@@ -23,7 +23,7 @@ import json
 
 
 def launch_setup(context, *args, **kwargs):
-    """Returns Launch Configuration for the TF between the lidar and the camera"""
+    """Return Launch Configuration for the TF between the lidar and the camera. """
     tf_file = LaunchConfiguration('tf_file_path').perform(context)
     with open(tf_file, 'r') as f:
         tf_data = json.load(f)
