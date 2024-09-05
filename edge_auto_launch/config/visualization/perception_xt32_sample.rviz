@@ -110,7 +110,7 @@ Visualization Manager:
       CYCLIST:
         Alpha: 0.30000001192092896
         Color: 255; 255; 255
-      Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+      Class: autoware_perception_rviz_plugin/DetectedObjects
       Display Acceleration: true
       Display Label: true
       Display PoseWithCovariance: true
@@ -160,7 +160,7 @@ Visualization Manager:
       CYCLIST:
         Alpha: 1
         Color: 30; 144; 255
-      Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+      Class: autoware_perception_rviz_plugin/DetectedObjects
       Display Acceleration: true
       Display Label: true
       Display PoseWithCovariance: true
