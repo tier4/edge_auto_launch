@@ -29,7 +29,7 @@
   <group>
     <push-ros-namespace namespace="$(var lidar_frame)/$(var camera_frame)"/>
     <!-- image_decompressor -->
-    <node pkg="image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
+    <node pkg="autoware_image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
       <remap from="decompressor/input/compressed_image" to="$(var compressed_image_topic)"/>
       <remap from="decompressor/output/raw_image" to="image_raw"/>
     </node>
@@ -42,7 +42,7 @@
       <arg name="pointcloud_topic" value="$(var pointcloud_topic)"/>
       <arg name="image_topic" value="image_raw"/>
     </include>
-    <!-- intaractive_calibrator -->
+    <!-- interactive_calibrator -->
     <node pkg="extrinsic_interactive_calibrator" exec="interactive_calibrator" name="interactive_calibrator" output="screen">
       <remap from="pointcloud" to="$(var pointcloud_topic)"/>
       <remap from="image" to="$(var compressed_image_topic)"/>
@@ -63,6 +63,6 @@
   <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id lidar --child-frame-id camera0/camera_link" />
   <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id lidar --child-frame-id camera1/camera_link" />
 
-  <!-- visuzalization -->
+  <!-- visualization -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_profile)"/>
 </launch>

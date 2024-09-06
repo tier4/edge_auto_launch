@@ -7,7 +7,7 @@
   <arg name="lidar_model"/>
   <arg name="calibration_mode" default="automatic"/>
 
-  <include file="$(find-pkg-share extrinsic_tag_based_calibrator)/launch/apriltag_16h5.launch.py">
+  <include file="$(find-pkg-share tag_based_pnp_calibrator)/launch/apriltag_16h5.launch.py">
     <arg name="image_topic" value="$(var image_topic)"/>
     <arg name="camera_info_topic" value="$(var camera_info_topic)"/>
   </include>
@@ -16,7 +16,7 @@
     <arg name="pointcloud_topic" value="$(var pointcloud_topic)"/>
   </include>
 
-  <node pkg="extrinsic_tag_based_calibrator" exec="extrinsic_tag_based_calibrator" name="extrinsic_tag_based_calibrator_node" output="screen">
+  <node pkg="tag_based_pnp_calibrator" exec="tag_based_pnp_calibrator" name="tag_based_pnp_calibrator" output="screen">
     <param name="calib_rate" value="10.0"/>
     <param name="parent_frame" value="$(var parent_frame)"/>
     <param name="child_frame" value="$(var child_frame)"/>
@@ -29,7 +29,7 @@
     <param name="max_tag_distance" value="20.0"/>
     <param name="max_allowed_homography_error" value="0.5"/>
     <param name="dynamics_model" value="static"/>
-    <!--constant_velicity,static-->
+    <!--constant_velocity,static-->
     <param name="calibration_crossvalidation_training_ratio" value="0.7"/>
     <param name="calibration_convergence_min_pairs" value="9"/>
     <param name="calibration_convergence_min_area_percentage" value="0.1"/>

@@ -14,7 +14,7 @@
 
   <let name="empty_container_is_specified" value="$(eval 'not &quot;$(var container_name)&quot;')" />
   <group if="$(var empty_container_is_specified)">
-    <node pkg="pointcloud_preprocessor" exec="crop_box_filter_node" name="crop_box_filter">
+    <node pkg="autoware_pointcloud_preprocessor" exec="crop_box_filter_node" name="crop_box_filter">
       <remap from="input" to="$(var input/pointcloud)"/>
       <remap from="output" to="$(var output/pointcloud)"/>
       <param name="input_frame" value="$(var frame_id)"/>
@@ -31,7 +31,7 @@
 
   <group unless="$(var empty_container_is_specified)">
     <load_composable_node target="$(var container_name)">
-      <composable_node pkg="pointcloud_preprocessor" plugin="pointcloud_preprocessor::CropBoxFilterComponent" name="crop_box_filter">
+      <composable_node pkg="autoware_pointcloud_preprocessor" plugin="autoware::pointcloud_preprocessor::CropBoxFilterComponent" name="crop_box_filter">
         <param name="input_frame" value="$(var frame_id)"/>
         <param name="output_frame" value="$(var frame_id)"/>
         <param name="min_x" value="$(var min_x)"/>
