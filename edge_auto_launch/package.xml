@@ -12,10 +12,9 @@
 
   <exec_depend>autoware_perception_rviz_plugin</exec_depend>
   <exec_depend>autoware_pointcloud_preprocessor</exec_depend>
-  <exec_depend>detected_object_feature_remover</exec_depend>
-  <exec_depend>euclidean_cluster</exec_depend>
-  <exec_depend>extrinsic_calibration_manager</exec_depend>
-  <exec_depend>extrinsic_manual_calibrator</exec_depend>
+  <exec_depend>autoware_detected_object_feature_remover</exec_depend>
+  <exec_depend>autoware_euclidean_cluster</exec_depend>
+  <exec_depend>sensor_calibration_manager</exec_depend>
   <exec_depend>tag_based_pnp_calibrator</exec_depend>
   <exec_depend>autoware_ground_segmentation</exec_depend>
   <exec_depend>intrinsic_camera_calibrator</exec_depend>
@@ -27,7 +26,9 @@
   <exec_depend>autoware_image_transport_decompressor</exec_depend>
   <exec_depend>individual_params</exec_depend>
   <exec_depend>autoware_image_projection_based_fusion</exec_depend>
-  <exec_depend>sensor_calibration_tools</exec_depend>
+  <!-- <exec_depend>sensor_calibration_tools</exec_depend> -->
+  <exec_depend>image_transport_plugins</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
