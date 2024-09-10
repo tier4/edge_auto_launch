@@ -23,6 +23,7 @@
     <node_container pkg="rclcpp_components" exec="component_container" name="nebula_xt32_node" namespace="/">
       <composable_node pkg="nebula_ros" plugin="HesaiDriverRosWrapper" name="hesai_driver_roswrapper_node" namespace="$(var namespace)">
         <param name="sensor_model" value="$(var sensor_model)"/>
+        <param name="sensor_ip" value="$(var sensor_ip)"/>
         <param name="return_mode" value="$(var return_mode)"/>
         <param name="frame_id" value="$(var frame_id)"/>
         <param name="scan_phase" value="$(var scan_phase)"/>
@@ -50,6 +51,9 @@
         <param name="cloud_max_angle" value="$(var cloud_max_angle)"/>
         <param name="dual_return_distance_threshold" value="$(var dual_return_distance_threshold)"/>
         <param name="setup_sensor" value="$(var setup_sensor)"/>
+        <param name="ptp_profile" value="1588v2"/>
+        <param name="ptp_transport_type" value="udp"/>
+        <param name="ptp_switch_type" value="non_tsn"/>
         <extra_arg name="use_intra_process_comms" value="true"/>
       </composable_node>
       <composable_node pkg="nebula_ros" plugin="HesaiHwMonitorRosWrapper" name="hesai_hw_monitor_ros_wrapper_node" namespace="$(var namespace)">
