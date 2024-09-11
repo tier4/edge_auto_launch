@@ -5,16 +5,11 @@
   <arg name="live_sensor" default="True"/>
 
   <!-- variables -->
-  <let name="lidar_model" value="pandar_xt32"/>
   <let name="lidar_frame" value="lidar"/>
   <let name="compressed_image_topic" value="/sensing/camera/$(var camera_name)/image_raw/compressed"/>
   <let name="camera_info_topic" value="/sensing/camera/$(var camera_name)/camera_info"/>
   <let name="pointcloud_topic" value="/sensing/lidar/xt32/aw_points"/>
   <let name="camera_frame" value="$(var camera_name)/camera_link"/>
-
-  <let name="rviz_profile" value=""/>
-  <let name="rviz_profile" value="$(find-pkg-share edge_auto_launch)/config/visualization/calibration_extrinsic_at128_camera0.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera0' &quot;)"/>
-  <let name="rviz_profile" value="$(find-pkg-share edge_auto_launch)/config/visualization/calibration_extrinsic_at128_camera1.rviz" if="$(eval &quot;'$(var camera_name)' == 'camera1' &quot;)"/>
 
   <!-- driver -->
   <group>
@@ -27,42 +22,28 @@
 
   <!-- calibrator -->
   <group>
-    <push-ros-namespace namespace="$(var lidar_frame)/$(var camera_frame)"/>
-    <!-- image_decompressor -->
-    <node pkg="autoware_image_transport_decompressor" exec="image_transport_decompressor_node" name="decompressor" output="screen">
-      <remap from="decompressor/input/compressed_image" to="$(var compressed_image_topic)"/>
-      <remap from="decompressor/output/raw_image" to="image_raw"/>
-    </node>
-    <!-- tag_based_calibrator -->
-    <include file="$(find-pkg-share edge_auto_launch)/launch/component/extrinsic_tag_based_calibrator.launch.xml">
-      <arg name="lidar_model" value="$(var lidar_model)"/>
-      <arg name="parent_frame" value="$(var lidar_frame)"/>
-      <arg name="child_frame" value="$(var camera_frame)"/>
-      <arg name="camera_info_topic" value="$(var camera_info_topic)"/>
-      <arg name="pointcloud_topic" value="$(var pointcloud_topic)"/>
-      <arg name="image_topic" value="image_raw"/>
-    </include>
-    <!-- interactive_calibrator -->
-    <node pkg="extrinsic_interactive_calibrator" exec="interactive_calibrator" name="interactive_calibrator" output="screen">
-      <remap from="pointcloud" to="$(var pointcloud_topic)"/>
-      <remap from="image" to="$(var compressed_image_topic)"/>
-      <remap from="camera_info" to="$(var camera_info_topic)"/>
-      <remap from="calibration_points_input" to="calibration_points"/>
-      <param name="camera_parent_frame" value="$(var lidar_frame)"/>
-      <param name="camera_frame" value="$(var camera_frame)"/>
-      <param name="use_calibration_api" value="false"/>
-      <param name="can_publish_tf" value="false"/>
-    </node>
-    <include file="$(find-pkg-share intrinsic_camera_calibration)/launch/optimizer.launch.xml"/>
+    <node pkg="sensor_calibration_manager" exec="sensor_calibration_manager" name="sensor_calibration_manager"/>
+    <node pkg="topic_tools" exec="relay" name="pointcloud_relay" args="$(var pointcloud_topic) /aw_points"/>
   </group>
 
   <!-- comment: this tf broadcast should be done elsewhere-->
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id base_link --child-frame-id lidar" />
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id camera0/camera_link --child-frame-id camera0/camera_optical_link" />
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id camera1/camera_link --child-frame-id camera1/camera_optical_link" />
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id lidar --child-frame-id camera0/camera_link" />
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.0 --qy 0.0 --qz 0.0 --qw 1.0 --frame-id lidar --child-frame-id camera1/camera_link" />
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id base_link --child-frame-id lidar">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id camera0/camera_link --child-frame-id camera0/camera_optical_link">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id camera1/camera_link --child-frame-id camera1/camera_optical_link">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id base_link --child-frame-id camera0/camera_link">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id base_link --child-frame-id camera1/camera_link">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="estimated_base_link_broadcaster" output="screen" args="--x 0.0 --y 0.0 --z 0.0 --qx 0.5 --qy -0.5 --qz 0.5 --qw -0.5 --frame-id base_link --child-frame-id lidar">
+    <!-- <param name="use_sim_time" value="true"/> -->
+  </node>
 
-  <!-- visualization -->
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_profile)"/>
 </launch>
